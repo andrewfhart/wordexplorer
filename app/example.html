@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Simple Tree</title>
+		<script src="js/wordtree.js"></script>
+		<script src="js/word-tree-layout.js"></script>
+
+		<script src="js/libs/raphael.js"></script>
+		<script src="js/libs/jquery.js"></script>
+		<script src="js/montecristo.js"></script>
+		<script>
+			var myTree = null;
+			function createTree(input,context) {
+			    var lefts = input[context].lefts;
+				for(var i = 0; i < lefts.length; i++){
+					lefts[i] = lefts[i].reverse();
+				}
+				var rights = input[context].rights;
+				
+				// Dimensions (width and height)
+				var w = 1600, h = 4096, detail = 100 /* % */;
+				var paper = Raphael("test", w, h);
+				makeWordTree(rights, context, detail, "test", w, h, WordTree.RO_LEFT, paper);	
+				makeWordTree(lefts, context, detail, "test", w, h, WordTree.RO_RIGHT, paper);				
+			}
+			// sample.json contains a var 'data' containing the json wordlist
+			$(document).ready(function(){
+			
+			    // Hook up the 'update' button
+			    $('#btnUpdate').click(function (e) {
+			        $('#test').html('');
+			        createTree(data,$("#search").val());
+			        $('#search').val('');
+			    });
+			});
+		</script>
+	</head>
+	<body>
+	    <input type="text" id="search" value=""/>
+	    <input type="button" id="btnUpdate" value="Update"/>
+		<div id="test"></div>
+	</body>
+</html>
